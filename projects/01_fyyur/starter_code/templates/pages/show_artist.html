@@ -71,6 +71,18 @@
 		{% endfor %}
 	</div>
 </section>
+<h3>
+	<a href="/artists/{{artist.id}}/edit"><button class="btn btn-primary btn-lg">UPDATE</button></a>
+	<button class="btn btn-primary btn-lg" id="delete-button" data-id="{{ artist.id }}" onclick="deleteArtist(this)">DELETE</button>
+
+</h3>
+<script>
+	deleteArtist = (e) => {
+		const targetId = e.dataset.id
+		console.log(targetId);
+		fetch('/artists/'+ targetId, {method: 'DELETE'})
+	}
+</script>
 
 {% endblock %}
 
