@@ -153,27 +153,24 @@ def search_venues():
 def show_venue(venue_id):
   # shows the venue page with the given venue_id
   # TODO: replace with real venue data from the venues table, using venue_id
-
   venue = Venue.query.get(venue_id)
   past_shows=[]
   upcoming_shows=[]
   current_date = datetime.now()
   for show in venue.shows:
     if show.start_time < current_date:
-      past_shows_count += 1
       past_shows.append({
         "artist_id": show.artist_id,
         "artist_name": show.artist.name,
         "artist_image_link":show.artist.image_link,
-        "start_time":format_datetime(str(show.start_time))
+        "start_time":show.start_time
       })
     if show.start_time > current_date:
-      upcoming_shows_count += 1
       upcoming_shows.append({
         "artist_id": show.artist_id,
         "artist_name": show.artist.name,
         "artist_image_link":show.artist.image_link,
-        "start_time":format_datetime(str(show.start_time))
+        "start_time":show.start_time
       })
 
   data = {
@@ -237,17 +234,17 @@ def create_venue_submission():
 #  ----------------------------------------------------------------
   @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
   def edit_venue(venue_id):
-  venue=Venue.query.get(venue_id)
-  form = VenueForm()
-  if venue:
-    form.name.data = venue.name
-    form.city.data = venue.city
-    form.state.data = venue.state
-    form.phone.data = venue.phone
-    form.address.data = venue.address
-    form.genres.data = venue.genres
-    form.image_link.data = venue.image_link
-    form.facebook_link.data = venue.facebook_link
+    venue = Venue.query.get(venue_id)
+    form = VenueForm()
+    if venue:
+      form.name.data = venue.name 
+      form.city.data = venue.city
+      form.state.data = venue.state
+      form.phone.data = venue.phone
+      form.address.data = venue.address
+      form.genres.data = venue.genres
+      form.image_link.data = venue.image_link
+      form.facebook_link.data = venue.facebook_link
 
   # TODO: populate form with values from venue with ID <venue_id>
   return render_template('forms/edit_venue.html', form=form, venue=venue)
@@ -256,6 +253,7 @@ def create_venue_submission():
 def edit_venue_submission(venue_id):
   # TODO: take values from the form submitted, and update existing
   # venue record with ID <venue_id> using the new attributes
+  error=False
   venue = Venue.query.get(venue_id)
   form = VenueForm()
   try:
@@ -265,11 +263,11 @@ def edit_venue_submission(venue_id):
     venue.phone = form.phone.data
     venue.address = form.address.data
     venue.genres = form.genres.data
-    venue.phone = form.phone.data
     venue.image_link = form.image_link.data
     venue.facebook_link = form.facebook_link.data
     db.session.commit()
   except:
+    error=True
     db.session.rollback()
   finally:
     db.session.close()

@@ -77,7 +77,6 @@
 <h3>
 	<a href="/venues/{{venue.id}}/edit"><button class="btn btn-primary btn-lg">UPDATE</button></a>
 	<button class="btn btn-primary btn-lg" id="delete-button" data-id="{{ venue.id }}" onclick="deleteVenue(this)">DELETE</button>
-
 </h3>
 <script>
 	deleteVenue = (e) => {
@@ -86,5 +85,6 @@
 		fetch('/venues/'+ targetId, {method: 'DELETE'})
 	}
 </script>
+
 {% endblock %}
 
