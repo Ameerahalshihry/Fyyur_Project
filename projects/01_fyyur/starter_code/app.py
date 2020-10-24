@@ -232,19 +232,19 @@ def create_venue_submission():
 # -----------------------------------------------------------------
 #  UPDATE Venue
 #  ----------------------------------------------------------------
-  @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
-  def edit_venue(venue_id):
-    venue = Venue.query.get(venue_id)
-    form = VenueForm()
-    if venue:
-      form.name.data = venue.name 
-      form.city.data = venue.city
-      form.state.data = venue.state
-      form.phone.data = venue.phone
-      form.address.data = venue.address
-      form.genres.data = venue.genres
-      form.image_link.data = venue.image_link
-      form.facebook_link.data = venue.facebook_link
+@app.route('/venues/<int:venue_id>/edit', methods=['GET'])
+def edit_venue(venue_id):
+  venue = Venue.query.get(venue_id)
+  form = VenueForm()
+  if venue:
+    form.name.data = venue.name 
+    form.city.data = venue.city
+    form.state.data = venue.state
+    form.phone.data = venue.phone
+    form.address.data = venue.address
+    form.genres.data = venue.genres
+    form.image_link.data = venue.image_link
+    form.facebook_link.data = venue.facebook_link
 
   # TODO: populate form with values from venue with ID <venue_id>
   return render_template('forms/edit_venue.html', form=form, venue=venue)
@@ -498,7 +498,7 @@ def shows():
       "venue_name":show.venue.name,
       "artist_name":show.artist.name,
       "artist_image_link":show.artist.image_link,
-      "start_time":format_datetime(show.start_time)
+      "start_time":show.start_time
     })
 
   return render_template('pages/shows.html', shows=data)
